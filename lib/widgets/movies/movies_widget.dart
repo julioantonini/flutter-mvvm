@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mvvm/services/init_getit.dart';
+import '../../screens/movie_details.dart';
+import '../../services/navigation_service.dart';
 import '../cached_image.dart';
 import 'favorite_button.dart';
 import 'genres_list_widget.dart';
@@ -15,7 +18,7 @@ class MoviesWidget extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12.0),
           onTap: () {
-            // TODO: Navigate To The Movie Details Screen
+            getIt<NavigationService>().navigate(const MovieDetailsScreen());
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
