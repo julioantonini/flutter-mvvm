@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mvvm/services/init_getit.dart';
+import '../../models/movies_model.dart';
 import '../../screens/movie_details.dart';
 import '../../services/navigation_service.dart';
 import '../cached_image.dart';
@@ -7,7 +8,10 @@ import 'favorite_button.dart';
 import 'genres_list_widget.dart';
 
 class MoviesWidget extends StatelessWidget {
-  const MoviesWidget({super.key});
+  const MoviesWidget({super.key, required this.movieModel});
+
+  final MovieModel movieModel;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,7 +22,9 @@ class MoviesWidget extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12.0),
           onTap: () {
-            getIt<NavigationService>().navigate(const MovieDetailsScreen());
+            getIt<NavigationService>().navigate(MovieDetailsScreen(
+              movieModel: movieModel,
+            ));
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -27,10 +33,16 @@ class MoviesWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12.0),
-                    child: const CachedImageWidget(
-                      url: 'https://i.ibb.co/FwTPCCc/Ultra-Linx.jpg',
+                  Hero(
+                    tag: movieModel.id,
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: CachedImageWidget(
+                          url:
+                              "https://image.tmdb.org/t/p/w500/${movieModel.backdropPath}",
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -38,13 +50,13 @@ class MoviesWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Movie Title",
+                        Text(
+                          movieModel.originalTitle,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 10),
-                        const Row(
+                        Row(
                           children: [
                             Icon(
                               Icons.star,
@@ -52,7 +64,7 @@ class MoviesWidget extends StatelessWidget {
                               size: 20,
                             ),
                             SizedBox(width: 5),
-                            Text("8/10"),
+                            Text("${movieModel.voteAverage}/10"),
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -67,8 +79,8 @@ class MoviesWidget extends StatelessWidget {
                               color: Theme.of(context).colorScheme.secondary,
                             ),
                             const SizedBox(width: 5),
-                            const Text(
-                              "Release Date",
+                            Text(
+                              movieModel.releaseDate,
                               style: TextStyle(color: Colors.grey),
                             ),
                             const Spacer(),

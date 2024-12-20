@@ -19,13 +19,13 @@ class NavigationService {
         builder: (context) => widget);
   }
 
-  void showSnackbar() {
+  void showSnackbar(String message) {
     final context = navigatorKey.currentContext!;
     ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-    const snackbarWidget = SnackBar(
+    final snackbarWidget = SnackBar(
         content: Text(
-      "Hello World - a movies app",
-      style: TextStyle(color: Colors.white),
+      message,
+      style: const TextStyle(color: Colors.white),
     ));
     ScaffoldMessenger.of(context).showSnackBar(
       snackbarWidget,
